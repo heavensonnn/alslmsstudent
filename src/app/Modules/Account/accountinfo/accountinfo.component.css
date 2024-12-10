@@ -40,3 +40,12 @@
   box-shadow: none;
   color: #2c5777;
 }
+
+@media (max-width: 576px) {
+  #profilecard {
+    margin-bottom: 100px;
+  }
+  h5 {
+    font-size: smaller;
+  }
+}

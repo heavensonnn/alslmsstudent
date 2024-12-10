@@ -44,6 +44,10 @@
 
 
 <!-- Form Area -->
+ <div class="mt-5">
+  <h5>Instructions:</h5>
+  <p>{{instructions}}</p>
+ </div>
 <form [formGroup]="answerForm" (ngSubmit)="onSubmit(itemno, lrn)" method="post">
 @if (questions[itemno]?.type === "Essay") {
         <div class="essay mt-5">

@@ -3,17 +3,17 @@
 		<div class="row justify-content-center align-items-center">
             <div class="col-lg-6">
 				<div class="ps-lg-5">
-					<div class="card text-white text-left" style="height: 400px;">
+					<div class="card text-white text-left" style="height: 400px;"  id="profilecard"> 
 						<div class="card-body bg-light text-dark p-4 p-xl-5">
-							<!-- <h2 class="pb-3 text-center">Take Web Design to the Next Level - Start Today!</h2> -->
+							<!-- <h2 class="pb-3 text-center">Take Web Design to the Next Level - Start Today!</h2>
 							@if(isLoading) {
 								<div class="d-flex justify-content-center align-items-center vh-100">
 								  <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
 									<span class="visually-hidden">Loading...</span>
 								  </div>
 								</div>
-							}
-							<div *ngIf="!isLoading">
+							} -->
+							<div>
 								<div class="card-body text-center">
 									<div class="">
 										<img [src]="profilePic" (error)="profilePic = 'assets/icon.jpg'"  style="width: 170px; height: 170px; object-fit:cover; border-radius:20px; padding: 10px;" >
@@ -87,14 +87,14 @@
 				<div class="ps-lg-5">
 					<div class="card  text-white text-left" style="height: 400px;">
 						<div class="card-body bg-light text-dark p-4 p-xl-5">
-							@if(isLoading) {
+							<!-- @if(isLoading) {
 								<div class="d-flex justify-content-center align-items-center vh-100">
 								  <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
 									<span class="visually-hidden">Loading...</span>
 								  </div>
 								</div>
-							}
-							<div *ngIf="!isLoading">
+							} -->
+							<div>
 								<form [formGroup]="updateForm" (ngSubmit)="onSubmit()" method="post">
 									<div class="mb-3">
 										<label class="form-label" for="password">Current Password</label> <input class="form-control" id="password" type="password" formControlName="oldpassword">

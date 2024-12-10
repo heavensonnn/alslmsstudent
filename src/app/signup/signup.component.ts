@@ -5,7 +5,9 @@ import { StudentService } from '../student.service';
 import { response } from 'express';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-
+import { catchError, tap } from 'rxjs/operators'
+import { of, throwError } from 'rxjs';
+import { birthdateMaxValidator } from './validator.component';
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -17,6 +19,7 @@ export class SignupComponent implements OnInit {
 
   showPassword1 = false;
   showPassword2 = false;
+  errorMessage = '';
   
   learnerForm = new FormGroup({
     firstname: new FormControl(null, [Validators.required]),
@@ -24,7 +27,7 @@ export class SignupComponent implements OnInit {
     lastname: new FormControl(null, [Validators.required]),
     extension_name: new FormControl(null),
     placeofbirth: new FormControl(null, [Validators.required]),
-    birthdate: new FormControl(null, [Validators.required]),
+    birthdate: new FormControl(null, [Validators.required, birthdateMaxValidator()]),
     // Address: new FormControl(null),
     last_education: new FormControl(null, [Validators.required]),
     gender: new FormControl(null, [Validators.required]),
@@ -40,38 +43,57 @@ export class SignupComponent implements OnInit {
 
   constructor(private studentservice: StudentService, private route: Router ) {}
 
-  onSubmit() {
-    if (this.learnerForm.value['password'] !== this.learnerForm.value['password_confirmation']) {
-      alert("Passwords do not match");
-      return;
-    }
+onSubmit() {
+  if (this.learnerForm.value['password'] !== this.learnerForm.value['password_confirmation']) {
+    alert("Passwords do not match");
+    return;
+  }
 
-    if(this.learnerForm.invalid) {
-      Object.keys(this.learnerForm.controls).forEach(control => {
-        this.learnerForm.get(control)?.markAllAsTouched();
-      })
-    } else {
-      this.studentservice.registerLearner(this.learnerForm.value).subscribe(
-        (response) => {
-          console.log("Student registered successfully:", response);
-          // alert("Student registered successfully");
+  if(this.learnerForm.invalid) {
+    Object.keys(this.learnerForm.controls).forEach(control => {
+      this.learnerForm.get(control)?.markAllAsTouched();
+    })
+  } else {
+    this.studentservice.registerLearner(this.learnerForm.value).subscribe({
+      next: (data)=> {
+        console.log("Student registered successfully:", data);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Registered Successfully!",
+          showConfirmButton: false,
+          timer: 1000
+        });
+        this.route.navigate(['/login']);
+      },
+      error: (err)=> {
+        console.log(err);
+        if(err === "Bad Request") {
           Swal.fire({
             position: "center",
-            icon: "success",
-            title: "Registered Successfully!",
+            icon: "error",
+            title: "Email already taken",
             showConfirmButton: false,
             timer: 1000
           });
-          this.route.navigate(['/login']);
-        },
-        (error) => {
-          console.error('Error registering student', error);
-          alert('An error occurred. Please Try Again.');
         }
-      );
-    }
-
+      }
+    });
+    // const learnerFormData = this.learnerForm.value;
+    // this.studentservice.registerLearner(learnerFormData)
+    //   .pipe(
+    //     catchError(error => {
+    //       console.log(learnerFormData);
+    //       console.error('Error occurred:', error);  // Log the error
+    //       return throwError(() => error)
+    //     })
+    //   )
+    //   .subscribe(data => {
+    //     console.log('Response:', data);  // Handle the response
+    //   });
   }
+
+}
 
   togglePasswordVisibility1(): void {
     this.showPassword1 = !this.showPassword1;
@@ -80,3 +102,16 @@ export class SignupComponent implements OnInit {
     this.showPassword2 = !this.showPassword2;
   }
 }
+
+// (response) => {
+//   console.log("Student registered successfully:", response);
+//   // alert("Student registered successfully");
+//   Swal.fire({
+//     position: "center",
+//     icon: "success",
+//     title: "Registered Successfully!",
+//     showConfirmButton: false,
+//     timer: 1000
+//   });
+//   this.route.navigate(['/login']);
+// },

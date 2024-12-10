@@ -25,6 +25,8 @@ import { response } from 'express';
 export class QuestionnairesComponent implements OnInit{
   assessmentID: any;
   assessmentitle: any;
+  instructions: any;
+  description: any;
   questions: any;
   lrn: any;
   itemno = 0;
@@ -55,13 +57,14 @@ constructor(
 
   answerForm = new FormGroup({
     answer: new FormControl(''),
-    // file: new FormControl('')
-
+    // file: new FormControl('')  
   });
 
   ngOnInit(): void {
     this.assessmentID = localStorage.getItem('assessmentID');
     this.assessmentitle = localStorage.getItem('assessmenttitle');
+    this.instructions = localStorage.getItem('assessmentinstruction');
+    this.description = localStorage.getItem('assessmentdescription');
     this.lrn = localStorage.getItem('LRN');
     this.spinner(this.assessmentID, this.lrn);
     this.getFile(this.assessmentID, this.lrn);
@@ -330,11 +333,13 @@ getmoduleID(aid: any) {
     const moduleTitle = this.mid[0].title;
     const adminname = this.mid[0].admin_name;
     const subname = this.mid[0].subname;
+    const modesc = this.mid[0].modesc;
     const cid = this.mid[0].classid;
     localStorage.setItem('moduleID', moduleID);
     localStorage.setItem('moduletitle', moduleTitle);
     localStorage.setItem('adminname', adminname);
     localStorage.setItem('sub_name', subname);
+    localStorage.setItem('modesc', modesc);
     localStorage.setItem('cid', cid);
   })
 }

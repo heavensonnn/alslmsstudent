@@ -10,6 +10,9 @@
         <h5 class="text-muted text-uppercase text-center">{{subname}} | {{admin_name}}</h5>
         <!-- <h5>{{item.formatted_date}}</h5> -->
     </div>
+    <div class="mt-5" id="modesc">
+        <p class="justify-text">{{modesc}}</p>
+    </div>
 
     @for (item of lessons; track $index) {
     <div class="p-3 m-3 border border-dark" style="background-color: rgb(200, 199, 199);" *ngIf="!isLoading">
@@ -18,7 +21,7 @@
             <div class="lessontitle" id="lessontitle" style="font-weight: 600;">
                 {{item.topic_title}}
             </div>
-            <div class="lessons lh-lg">
+            <div class="lessons lh-lg lh-sm-normal">
                 {{item.lesson}}             
             </div>
             <div class="row">
@@ -57,9 +60,14 @@
                                         @if(assessment.isOpen == 1) {
                                             <div class="row border-bottom mt-2">
                                                 <div class="col-10 ">
-                                                    <a [routerLink]="['/main/Subject/subjectmain/modules/questionnaires']" (click)="getAssessmentID(assessment.assessmentid, assessment.title)" class="d-flex"><p class="fw-bolder" style="font-size: 15px;">{{assessment.title}}</p> 
-                                                    </a>
-                                                    <small class="d-flex align-items-start"><strong class="me-2"><p class="text-danger">Due Date: </p></strong><span>{{assessment.due_date}}</span></small>
+                                                    @if (assessment.scores == null){
+                                                        <a [routerLink]="['/main/Subject/subjectmain/modules/questionnaires']" (click)="getAssessmentID(assessment.assessmentid, assessment.title, assessment.instruction, assessment.description)" class="d-flex"><p class="fw-bolder" style="font-size: 15px;">{{assessment.title}}</p> 
+                                                        </a>
+                                                    }@else {
+                                                        <p class="fw-bolder" style="font-size: 15px;">{{assessment.title}}</p> 
+
+                                                    }
+
                                                     @if(lrn === assessment.slrn) {
                                                         <small class="d-flex align-items-start"><strong class="me-2"><p class="text-success">Date Submitted: </p></strong><span>{{assessment.formatted_date}}</span></small>
                                                         @if (assessment.scores == null) {
@@ -77,35 +85,45 @@
                                                                 </a>
                                                             </small>                                                        
                                                         }
+                                                    } @else {
+                                                        <small class="d-flex align-items-start"><strong class="me-2"><p class="text-danger">Due Date: </p></strong><span>{{assessment.due_date}}</span></small>
                                                     }
                                                 </div>
                                                 <div class="col-2 d-flex justify-content-end">                                                
                                                     @if(lrn == assessment.slrn) {
-                                                        <input type="checkbox" disabled checked style="transform: scale(1.5);">
+                                                        <input type="checkbox" disabled checked style="transform: scale(1.5);" class="checkbox">
                                                     } @else {
-                                                        <input type="checkbox" disabled style="transform: scale(1.5);">
+                                                        <input type="checkbox" disabled style="transform: scale(1.5);" class="checkbox">
                                                     }
                                                 </div>
                                             </div>
                                         } @else if(assessment.isOpen == 0) {
                                             <div class="row border-bottom mt-2">
                                                 <div class="col-10 ">
-                                                    <p class="fw-bolder" style="font-size:15px;">{{assessment.title}}</p>
-                                                    <small class="d-flex align-items-start"><strong class="me-2"><p class="text-danger">Due Date: </p></strong><span>{{assessment.due_date}}</span></small>
+                                                    <p class="fw-bolder" style="font-size:15px;">{{assessment.title}} <span class="text-danger">(Closed)</span></p>
+                                                    
                                                     @if(lrn === assessment.slrn) {
                                                         <small class="d-flex align-items-start"><strong class="me-2"><p class="text-success">Date Submitted: </p></strong><span>{{assessment.formatted_date}}</span></small>
                                                         @if (assessment.scores == null) {
                                                             <small class="d-flex align-items-start"><strong class="me-2"><p>Score: </p></strong><span>Not graded yet</span></small>
                                                         } @else {
-                                                            <small class="d-flex align-items-start"><strong class="me-2"><p>Score: </p></strong><span>{{assessment.scores}}</span></small>
+                                                            <small class="d-flex align-items-start"><strong class="me-2"><p>Score: </p></strong><span>{{assessment.scores}}</span>
+                                                                <a [routerLink]="['/main/Subject/subjectmain/modules/result', assessment.assessmentid]">
+                                                                    <button type="button" class="btn btn-sm p-0">
+                                                                        <i class="fa-solid fa-eye"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </small>
                                                         }
+                                                    } @else {
+                                                        <small class="d-flex align-items-start"><strong class="me-2"><p class="text-danger">Due Date: </p></strong><span>{{assessment.due_date}}</span></small>
                                                     }
                                                 </div>
                                                 <div class="col-2 d-flex justify-content-end">
                                                     @if(lrn == assessment.slrn) {
-                                                        <input type="checkbox" disabled checked style="transform: scale(1.5);">
+                                                        <input type="checkbox" disabled checked style="transform: scale(1.5);" class="checkbox">
                                                     } @else {
-                                                        <input type="checkbox" disabled style="transform: scale(1.5);">
+                                                        <input type="checkbox" disabled style="transform: scale(1.5);" class="checkbox">
                                                     }
                                                 </div>
                                             </div>

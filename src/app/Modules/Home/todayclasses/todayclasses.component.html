@@ -11,23 +11,28 @@
     <!-- Today's Classes -->
     <div class="col-lg-8" id="card" *ngIf="!isLoading">
       <div class="row">
-        @for (item of subjects; track $index) {
-          <div class="col-sm-12 mb-3 col-md-12 col-lg-6">
-            <a [routerLink]="['/main/Subject/subjectmain/modules']" (click)="getClass(item.subjectid, item.classid, item.admin_name, item.subject_name)">
-              <div class="card" style="width: 100%;">
-                <div class="image">
-                  <img src="/assets/{{item.image}}" class="card-img-top border border-bottom" alt="...">
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">{{item.subject_name}}</h5>
-                  <div class="card-details">            
-                    <p class="card-text">{{item.schedule}}</p>
-                    <p class="card-text">{{item.admin_name}}</p>
+        @if(subjects && subjects.length) {
+          @for (item of subjects; track $index) {
+            <div class="col-sm-12 mb-3 col-md-12 col-lg-6">
+              <a [routerLink]="['/main/Subject/subjectmain/modules']" (click)="getClass(item.subjectid, item.classid, item.admin_name, item.subject_name)">
+                <div class="card" style="width: 100%;">
+                  <div class="image">
+                    <img src="/assets/{{item.image}}" class="card-img-top border border-bottom" alt="...">
+                  </div>
+                  <div class="card-body">
+                    <h5 class="card-title">{{item.subject_name}}</h5>
+                    <div class="card-details">            
+                      <p class="card-text">{{item.schedule}}</p>
+                      <p class="card-text">{{item.school}}</p>
+                      <p class="card-text">{{item.admin_name}}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
-          </div>
+              </a>
+            </div>
+          }
+        } @else {
+          <h5 style="margin-top: 2rem;">There are no subjects assigned to you yet.</h5>
         }
       </div>
     </div>

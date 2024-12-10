@@ -93,5 +93,21 @@ span {
 
    #lessontitle {
     font-weight: lighter;
+    font-size: 20px;
    }
+
+   .lessons {
+    font-size: smaller;
+   }
+
+   #modesc {
+    font-size: smaller;
+    margin-bottom: 2rem;
+   }
+
+   .alert {
+    font-size: smaller;
+   }
+
+   
 }

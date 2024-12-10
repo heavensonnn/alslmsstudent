@@ -66,9 +66,10 @@
                                                         <input type="date" id="birthdate" formControlName="birthdate" class="form-control form-control-lg" />
                                                         <label class="form-label" for="birthdate">
                                                             Birthdate
-                                                            <div *ngIf="learnerForm.get('birthdate')?.touched && learnerForm.get('birthdate')?.invalid" class="text-danger d-flex justify-content-end align-items-end">
+                                                            <div *ngIf="learnerForm.get('birthdate')?.touched && learnerForm.get('birthdate')?.invalid" class="text-danger">
                                                                 <small *ngIf="learnerForm.get('birthdate')?.errors?.['required']">Birthdate is required.</small>
-                                                            </div> 
+                                                                <small *ngIf="learnerForm.get('birthdate')?.errors?.['max']">Please enter a birthdate before January 1st, 2016.</small>
+                                                            </div>
                                                         </label>
                                                     </div>
                                                 </div>

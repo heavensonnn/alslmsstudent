@@ -27,12 +27,12 @@
       <div class="col-12" *ngIf="!isLoading">
           @for (item of modules; track $index) {
             @if (isModuleOpen(item.formatted_date)) {
-              <a [routerLink]="['/main/Subject/subjectmain/modules/lesson']" (click)="getLessons(item.modules_id, item.title)">
+              <a [routerLink]="['/main/Subject/subjectmain/modules/lesson']" (click)="getLessons(item.modules_id, item.title, item.description)">
                   <mat-card class="matcard mb-3">
                       <div class="row align-items-center">
                           <div class="col-12 col-lg-9">
                               <mat-card-header class="matcardheader">Module {{$index + 1}}</mat-card-header>
-                              <mat-card-content class="matcardcontent text-muted text-uppercase">{{item.title}}</mat-card-content>
+                              <mat-card-content class="matcardcontent text-uppercase">{{item.title}}</mat-card-content>
                           </div>
                           <div class="col-12 col-lg-3 text-end">
                               <mat-card-content class="matcardcontent">{{item.formatted_date}}</mat-card-content>

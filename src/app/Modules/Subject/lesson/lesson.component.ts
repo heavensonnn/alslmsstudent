@@ -20,6 +20,7 @@ export class LessonComponent implements OnInit {
   moduletitle: any
   admin_name: any
   subname: any
+  modesc: any
   lrn: any
   assessmentlist: { [lessonId: string]: any [] } = {};
   overdueHeaderShown: boolean = false;
@@ -29,6 +30,7 @@ export class LessonComponent implements OnInit {
 
   ngOnInit(): void {
     this.moduleID = localStorage.getItem('moduleID');
+    this.modesc = localStorage.getItem('modesc');
     this.moduletitle = localStorage.getItem('mtitle');
     console.log(this.moduleID);
     this.modulename = localStorage.getItem('moduletitle');
@@ -63,9 +65,11 @@ export class LessonComponent implements OnInit {
     })
   }
 
-  getAssessmentID(aid: any, title: any){
+  getAssessmentID(aid: any, title: any, instruction: any, description: any){
     localStorage.setItem('assessmentID', aid);
     localStorage.setItem('assessmenttitle', title);
+    localStorage.setItem('assessmentinstruction',instruction);
+    localStorage.setItem('assessmentdescription', description);
   }
 
   proceedToResultAnalysis(aid: any) {

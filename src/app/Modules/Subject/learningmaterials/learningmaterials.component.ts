@@ -49,13 +49,15 @@ export class LearningmaterialsComponent implements OnInit {
   getModules(classid:any) {
     this.studentservice.getModules(classid).subscribe((result: any) => {
       this.modules = result;
+      console.log(this.modules);
     })
   }
 
 
-  getLessons(mid: any, title: any) {
+  getLessons(mid: any, title: any, description: any) {
     localStorage.setItem('moduleID', mid);
     localStorage.setItem('moduletitle', title);
+    localStorage.setItem('modesc', description);
   }
 
   checkProgress() {

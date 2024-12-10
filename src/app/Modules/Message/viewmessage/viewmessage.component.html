@@ -13,6 +13,7 @@
             <thead>
             <tr>
                 <!-- <th>Teacher Name</th> -->
+                <th>Sender</th>
                 <th>Message</th>
                 <th>Date</th>
             </tr>
@@ -23,7 +24,8 @@
             <tbody *ngIf="!isLoading">
                 <tr *ngFor="let msg of messages" (click)="viewMessage(msg)">
                     <!-- <td>{{ (msg.lastname + ', ' + msg.firstname) }}</td> Use sender_name -->
-                    <td>{{msg.sender_name}}: {{ msg.messages }}</td>
+                    <td><strong>{{msg.sender_name}}</strong></td>
+                    <td>{{ msg.messages }}</td>
                     <td>{{ msg.updated_at | date:'medium' }}</td>
                 </tr>
             </tbody>
