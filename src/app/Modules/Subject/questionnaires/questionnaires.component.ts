@@ -97,52 +97,61 @@ getQuestions(aid: any, lrn: any){
   //   });
   //   // console.log(qid);
   // }
-next(i: number): void {
-  if (this.itemno < this.questions.length && i == 1) {
-    // Save the current answer before navigating
-    const answerValue = this.answerForm.get('answer')?.value;
+  next(i: number): void {
+    // Get the current answer value
+    const currentAnswer = this.answerForm.get('answer')?.value;
     this.spinner(this.assessmentID, this.lrn);
-    if (answerValue) {
-      this.student.saveAnswers(this.questions[this.itemno]?.question_id, this.lrn, answerValue).subscribe((result: any) => {
-        this.questions[this.itemno].user_answer = answerValue;
-        this.itemno += i;
-        console.log(this.questions[this.itemno]);
-        this.answer = this.questions[this.itemno]?.user_answer;
-        console.log(result);
-      });
-      // this.onSubmit(this.questions[this.itemno]?.question_id, this.lrn);
-    }
-
-    // Move to the next question
-   
-
-    // Set the form's answer to the next question's answer if available
-    
-  }
-}
-
-prev(i: number): void {
-  if (this.itemno > 0 && i == -1) {
+    this.student.saveAnswers(this.questions[this.itemno]?.question_id, this.lrn, currentAnswer).subscribe((result: any) => {
+      // this.questions[this.itemno].user_answer = currentAnswer;
+    })
+    this.itemno += i;
     // Save the current answer before navigating
-    const answerValue = this.answerForm.get('answer')?.value;
-      // Move to the previous question
-      
-    if (answerValue) {
-      this.spinner(this.assessmentID, this.lrn);
-      this.student.saveAnswers(this.questions[this.itemno]?.question_id, this.lrn, answerValue).subscribe((result: any) => {
-        this.questions[this.itemno].user_answer = answerValue;
-        this.itemno += i;
-        console.log(this.questions[this.itemno]);
-        this.answer = this.questions[this.itemno]?.user_answer;
-        console.log(result);
-      });
-      // this.onSubmit(this.questions[this.itemno]?.question_id, this.lrn);  // Save the answer for the current question
-    }
-
+    // this.spinner(this.assessmentID, this.lrn);
+    // this.student.saveAnswers(this.questions[this.itemno]?.question_id, this.lrn, currentAnswer).subscribe((result: any) => {
+    //   // Save the user's answer to the current question
+    //   this.questions[this.itemno].user_answer = currentAnswer;
+    //   console.log(`Answer saved for itemno ${this.itemno}:`, currentAnswer);
   
-    // Set the form's answer to the previous question's answer if available
+    //   // Increment the itemno to navigate to the next question
+    //   this.itemno += i;
+  
+    //   // Load the next question's answer into the form
+    //   const nextAnswer = this.questions[this.itemno]?.user_answer || ''; // Default to an empty string if no answer exists
+    //   this.answerForm.get('answer')?.setValue(nextAnswer);
+  
+    //   console.log(`Navigated to itemno ${this.itemno}, answer set to:`, nextAnswer);
+    //   console.log(result);
+    // });
   }
-}
+  
+  prev(i: number): void {
+    // Get the current answer value
+    const currentAnswer = this.answerForm.get('answer')?.value;
+    this.spinner(this.assessmentID, this.lrn);
+    this.student.saveAnswers(this.questions[this.itemno]?.question_id, this.lrn, currentAnswer).subscribe((result: any) => {
+      // this.questions[this.itemno].user_answer = currentAnswer;
+    })
+    this.itemno += i;
+    // Save the current answer before navigating
+    // this.spinner(this.assessmentID, this.lrn);
+    // this.student.saveAnswers(this.questions[this.itemno]?.question_id, this.lrn, currentAnswer).subscribe((result: any) => {
+    //   // Save the user's answer to the current question
+    //   this.questions[this.itemno].user_answer = currentAnswer;
+    //   console.log(`Answer saved for itemno ${this.itemno}:`, currentAnswer);
+  
+    //   // Decrement the itemno to navigate to the previous question
+    //   this.itemno += i;
+  
+    //   // Load the previous question's answer into the form
+    //   const prevAnswer = this.questions[this.itemno]?.user_answer || ''; // Default to an empty string if no answer exists
+    //   this.answerForm.get('answer')?.setValue(prevAnswer);
+  
+    //   console.log(`Navigated to itemno ${this.itemno}, answer set to:`, prevAnswer);
+    //   console.log(result);
+    // });
+  }
+  
+  
   
 
 onSubmit(qid: any, slrn: any) {

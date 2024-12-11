@@ -322,12 +322,4 @@ h3 {
     .matformfield {
         width: 100%;
     }
-    #essaytextarea {
-        width: 100%;
-        display: block !important;
-    }
-
-    editor {
-        display: none  !important;
-    }
 }
