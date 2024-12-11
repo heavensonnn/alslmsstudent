@@ -38,7 +38,7 @@ export class LoginComponent {
             Swal.fire({
               position: "center",
               icon: "warning",
-              title: "Provided Credentials are Incorrect",
+              title: "Your password is incorrect",
               showConfirmButton: false,
               timer: 3000
             });
@@ -68,7 +68,16 @@ export class LoginComponent {
           }
         },
         error: (error: any) => {
-          if(error === 'Bad Request' && error.response == null) {
+          if(error === 'Unauthorized') {
+            Swal.fire({
+              position: "center",
+              icon: "warning",
+              title: "Provided Credentials are Incorrect",
+              showConfirmButton: false,
+              timer: 3000
+            });
+          }
+          if(error === 'Bad Request') {
             Swal.fire({
               position: "center",
               icon: "warning",
