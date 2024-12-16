@@ -45,21 +45,34 @@
             <div class="card-body-assessment-links">
               @for (item of pendingassessments; track $index) {
                 @if(item.isOpen == 1) {
+                  <div class="d-flex justify-content-end me-4">
+                    <span class="text-danger" style="font-size: 0.8rem;">Due Date: </span>
+                    <span style="font-size: 0.8rem;">{{item.due_date}}</span>
+                  </div>
                   <a [routerLink]="['/main/Subject/subjectmain/modules/questionnaires']" 
                     (click)="getAssessmentID(item.assessmentid, item.title)" 
-                    class="border-bottom">
-                    {{item.title}} @if(item.isDateDue == 0) {<span class="text-danger">(Overdue)</span>}
+                    class="border-bottom mt-2">
+                    <span 
+                    [style.color]="item.isDateDue == 0 ? '#FFA500' : 'inherit'">
+                    {{item.title}}
+                  </span>
                   </a>
                 } @else if (item.isOpen == 0) {
+                  <div class="d-flex justify-content-end me-4">
+                    <span class="text-danger" style="font-size: 0.8rem;">Due Date: </span>
+                    <span style="font-size: 0.8rem;">{{item.due_date}}</span>
+                  </div>
                   <a [routerLink]="['/main/Subject/subjectmain/modules/questionnaires']" 
-                    (click)="getAssessmentID(item.assessmentid, item.title)" 
-                    class="border-bottom" 
-                    style="pointer-events: none; opacity: 0.5; color: gray;">
-                    {{item.title}} @if(item.isDateDue == 0) {<span class="text-danger">(Overdue)</span>}
+                    style="pointer-events: none;" 
+                    class="border-bottom mt-2">
+                    <span 
+                    [style.color]="item.isDateDue == 0 ? 'gray' : 'inherit'">
+                    {{item.title}}
+                  </span>
                   </a>
                 }
               }
-            </div>
+            </div>            
           </div>
         </div>
       </div>

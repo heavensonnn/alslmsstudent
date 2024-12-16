@@ -183,4 +183,14 @@ export class StudentService {
   getmoduleID(aid: any): Observable<any> {
     return this.http.get(`${this.apiUrl}getmoduleID?aid=${aid}`);
   }
+
+  // Fetch unread messages
+  getUnreadMessages(lrn: any): Observable<any> {
+    return this.http.get(`${this.apiUrl}messages/unread/${lrn}`);
+  }
+
+  // Clear unread messages
+  clearUnreadMessages(lrn: string): Observable<any> {
+    return this.http.post(this.apiUrl + 'messages/clear', { lrn });
+  }
 }

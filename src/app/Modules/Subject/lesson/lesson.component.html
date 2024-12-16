@@ -27,18 +27,22 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div role="alert">
-                        <div class="alert alert-primary mt-2"> 
-                            <a href="http://localhost:8000/storage/lesson_file/{{item.file}}" target="_blank" download>{{item.file}}</a><br>
-                            <a *ngFor="let media of item.media" 
-                            href="http://localhost:8000/storage/lesson_file/{{ media.filename }}" 
-                            target="_blank" style="display: flex;"
-                            download>{{ media.filename }}</a>
+                        @if(item.file != null || (item.media && item.media.length > 0)) {
+                            <div class="alert alert-primary mt-2"> 
+                                <a href="http://localhost:8000/storage/{{item.file}}" target="_blank" download>{{item.file}}</a><br>
+                                <a *ngFor="let media of item.media" 
+                                href="http://localhost:8000/storage/{{ media.filename }}" 
+                                target="_blank" style="display: flex;"
+                                download>{{ media.filename }}</a>
+                            </div>
+                        }
+                        <div style="margin-top: 20px;">
+                            <a [routerLink]="['/main/Subject/subjectmain/modules/discussionlist']" (click)="getLessonID(item.lesson_id)">
+                                <button type="button" class="btn" style="background-color: #045076; color: white;">
+                                    View Your Discussions
+                                    </button>
+                            </a>
                         </div>
-                        <a [routerLink]="['/main/Subject/subjectmain/modules/discussionlist']" (click)="getLessonID(item.lesson_id)">
-                            <button type="button" class="btn" style="background-color: #045076; color: white;">
-                                View Your Discussions
-                                </button>
-                        </a>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -49,10 +53,10 @@
                                 <mat-expansion-panel-header id="accordionheader">
                                     <strong class="accordion-title">View Assessments&nbsp;</strong>
                                     <span 
-                                        class="badge bg-primary text-light px-2 py-1" 
+                                        class="badge bg-success text-light px-2 py-1" 
                                         style="cursor: pointer; transition: transform 0.2s, background-color 0.2s;"
                                     >
-                                        Click to expand
+                                        {{item.total_assessments}}
                                     </span>
                                 </mat-expansion-panel-header>
                                 @if (assessmentlist[item.lesson_id]?.length) {

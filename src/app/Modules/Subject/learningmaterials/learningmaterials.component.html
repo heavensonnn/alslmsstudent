@@ -12,7 +12,7 @@
       <div class="col-md-5 col-sm-12 mb-3" *ngIf="!isLoading">
           <div class="d-flex justify-content-center justify-content-md-end">
               <!-- Check Your Progress Modal -->
-              <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="checkProgress()">
+              <button type="button" class="btn btn-primary me-2" (click)="checkProgress()">
                   Check Your Progress
               </button>
 
@@ -44,11 +44,11 @@
               <mat-card class="matcard mb-3">
                 <div class="row align-items-center">
                     <div class="col-12 col-lg-9">
-                        <mat-card-header class="matcardheader">Module {{$index + 1}} <span class="text-danger ms-2">(Still Closed)</span></mat-card-header>
+                        <mat-card-header class="matcardheader text-muted">Module {{$index + 1}}</mat-card-header>
                         <mat-card-content class="matcardcontent text-muted text-uppercase">{{item.title}} </mat-card-content>
                     </div>
                     <div class="col-12 col-lg-3 text-end">
-                        <mat-card-content class="matcardcontent">{{item.formatted_date}}</mat-card-content>
+                        <mat-card-content class="matcardcontent text-muted">{{item.formatted_date}}</mat-card-content>
                     </div>
                 </div>
               </mat-card>
@@ -104,7 +104,7 @@
 </div>
 
 <!-- Progress Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -159,7 +159,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <!-- Spinner -->

@@ -3,11 +3,12 @@ import { Router, RouterModule } from '@angular/router';
 import { StudentService } from '../student.service';
 import Swal from 'sweetalert2';
 import { ProfileserviceService } from '../profileservice.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
 })
@@ -18,12 +19,19 @@ export class MainComponent implements OnInit {
   lrn: any;
   learner: any;
   profilePic: string = 'assets/icon.jpg';
+  unreadMessagesCount = 0; // Variable to hold the badge count
 
   ngOnInit(): void {
       const authToken = localStorage.getItem('authToken');
       this.lrn = localStorage.getItem('LRN');
       const token = localStorage.getItem('authToken'); // Retrieve Token from localStorage
-    
+
+        // Set an interval to periodically call fetchUnreadMessages
+      setInterval(() => {
+          this.fetchUnreadMessages();
+      }, 1000); // Interval time in milliseconds (e.g., 5000ms = 5 seconds)
+
+
       // if (token) {
       //   this.studentservice.getLearnerByToken(token).subscribe({
       //     next: (data) => {
@@ -111,5 +119,28 @@ export class MainComponent implements OnInit {
       }
     );
   }
+
+    // Fetch unread messages and update count
+  fetchUnreadMessages(): void {
+    console.log(this.lrn);
+    this.studentservice.getUnreadMessages(this.lrn).subscribe((response: any) => {
+      this.unreadMessagesCount = response;
+      // console.log(this.unreadMessagesCount);
+      console.log(response);
+      localStorage.setItem('messagecount', response);
+    });
+  }
+
+  // Clear messages count when button is clicked
+  // clearMessages(): void {
+  //   this.unreadMessagesCount = 0;
+  //   this.studentservice.clearUnreadMessages(this.lrn).subscribe();
+  // }
+
+  countclear() {
+    this.unreadMessagesCount = 0; 
+    this.route.navigate(['/main/Message'])
+  }
+  
   
 }

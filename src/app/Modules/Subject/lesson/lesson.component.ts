@@ -22,6 +22,7 @@ export class LessonComponent implements OnInit {
   subname: any
   modesc: any
   lrn: any
+  totalassessments: number = 0;
   assessmentlist: { [lessonId: string]: any [] } = {};
   overdueHeaderShown: boolean = false;
   isLoading = false;
@@ -61,7 +62,7 @@ export class LessonComponent implements OnInit {
         //   assessment.isOpen = dueDate >= today ? true : false; 
         // });
       
-      console.log(result);
+      console.log(result.assessments);
     })
   }
 

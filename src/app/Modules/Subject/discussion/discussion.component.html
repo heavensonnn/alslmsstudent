@@ -46,17 +46,19 @@
           <!-- Spinner -->
           @if(isLoading) {
             <div class="d-flex justify-content-center align-items-center vh-100">
-              <div class="spinner-border" role="status" style="width: 7rem; height: 7rem;">
+              <div class="spinner-border" role="status" style="width: 3rem; height: 3rem;">
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
           }
           <div *ngFor="let discussion of discussions"
-          [ngClass]="{'teacher-answer': discussion.role === 'teacher', 'student-answer': discussion.role === 'student' && !discussion.isCurrentUser, 'current-user-answer': discussion.isCurrentUser}"
+          [ngClass]="{'teacher-answer': discussion.role === 'teacher', 'student-answer': discussion.role === 'student' && !discussion.isCurrentUser, 'current-user-answer': discussion.isCurrentUser}"   [ngStyle]="{
+            color: discussion.isCurrentUser ? 'black' : 'white'
+          }"
           class="answer">
-            <div class="answer-user" style="color: white;">{{discussion.user}}</div>
+            <div class="answer-user">{{discussion.user}}</div>
             <div class="answer-date" style="color: rgb(155, 146, 146);">{{discussion.date | date:'medium'}}</div>
-            <div class="answer-text"><p [innerHTML]="transformText(discussion.answer)" style="color: white;"></p></div>
+            <div class="answer-text"><p [innerHTML]="transformText(discussion.answer)"></p></div>
           </div>
         </div>
       </div>

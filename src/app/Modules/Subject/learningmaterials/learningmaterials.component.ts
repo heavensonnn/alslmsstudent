@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatCardHeader, MatCardModule } from '@angular/material/card';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { StudentService } from '../../../student.service';
 import { CommonModule, formatDate } from '@angular/common';
 
@@ -28,7 +28,7 @@ export class LearningmaterialsComponent implements OnInit {
   isLoading = false;
 
 
-  constructor (private studentservice: StudentService) {
+  constructor (private studentservice: StudentService, private router: Router) {
     this.today = formatDate(new Date(), 'yyyy-MM-dd', 'en');
   }
 
@@ -61,10 +61,11 @@ export class LearningmaterialsComponent implements OnInit {
   }
 
   checkProgress() {
-    this.studentservice.checkProgress(this.cid, this.lrn).subscribe((result: any) => {
-      this.progress = result;
-      console.log(result);
-    })
+    // this.studentservice.checkProgress(this.cid, this.lrn).subscribe((result: any) => {
+    //   this.progress = result;
+    //   console.log(result);
+    // })
+    this.router.navigate(['/main/Subject/subjectmain/modules/progress'])
   }
 
   // getPendingAssessments(lrn: any) {
@@ -74,10 +75,7 @@ export class LearningmaterialsComponent implements OnInit {
   //   })
   // }
 
-  getAssessmentID(aid: any, title: any){
-    localStorage.setItem('assessmentID', aid);
-    localStorage.setItem('assessmenttitle', title);
-  }
+
 
   getAnnouncements(cid: any) {
     this.studentservice.getAnnouncements(cid).subscribe((result: any) => {
