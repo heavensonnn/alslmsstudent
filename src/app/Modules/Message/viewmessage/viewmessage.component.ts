@@ -14,202 +14,94 @@ import Swal from 'sweetalert2';
   styleUrl: './viewmessage.component.css'
 })
 export class ViewmessageComponent implements OnInit {
-  isLoading: boolean = false;
+  isLoading: boolean = false; // This controls the loader visibility
+  isSubmitting: boolean = false; // Tracks submission state
+
+  convoMessages: any[] = [];
+  learnerName: string = '';
+  newMessage: string = '';
+  currentDate: Date = new Date();
+  lrnLearner: any;
+  adminName: any;
+  adminID: any;
+  currentUser: any;
   private intervalId: any;
+  adminid: any;
 
-  isModalOpen = false;
-  isModalOpen2 = false;
-  isModalOpen3 = false;
-  currentDate = new Date();
-  messages: any;
-  admin: any;
-  selectedmessageID: any;
-  isSubmitting: boolean = false;
-  
-  // Progress Bar
-  isSending = false;
-  progress = 0;
-
-
-  selectedMessage: any = null;
-  replyText: string = '';
-
-  constructor(private studentservice: StudentService, private route: Router) {}
-
-  viewMessage(msg:any) {
-    this.selectedMessage = msg;
-    this.selectedmessageID = msg.messageid;
-    this.isModalOpen3 = true;
+  constructor(private apiService: StudentService) {
+    this.currentDate = new Date(); // Initialize with the current date and time
   }
-
-  sendReply(adminID: any, mid:any)
-  {
-    this.isSubmitting = true;
-    const lrn = localStorage.getItem('LRN');
-
-    if (this.replyText.trim()) {
-      const replyPayload = {
-        adminID: adminID,
-        messages: this.replyText,
-        lrn: localStorage.getItem('LRN'), //Get sender LRN
-        mid: mid
-      };
-      this.studentservice.sendReply(replyPayload).subscribe(
-        response => {
-          this.isSending = true;
-          this.progress = 20;
-          const interval = setInterval(() => {
-            if(this.progress < 100) {
-              this.progress += 20;
-            } else {
-              clearInterval(interval);
-              this.isSending = false;
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Message sent!",
-                showConfirmButton: false,
-                timer: 1500
-              });
-              this.closeModal3();
-              console.log('Reply Sent Successfully', response);
-              this.replyText = ''; //Clear the reply box
-            }
-          }, 100)
-          this.isSubmitting = false;
-          this.loadMessage(lrn); //Reload Messages to shwo the updated one
-        },
-        error => {
-          this.isSubmitting = false;
-          console.error('Error sending reply:', error);
-          alert('Failed to send reply.');
-        }
-      );
-    } else {
-      alert('Reply Cannot be empty.');
-    }
-  }
-
   ngOnInit(): void {
-    const lrn = localStorage.getItem('LRN');
-    // this.admin = localStorage.getItem('admin_name');
-    // this.admin(lrn);
-    this.getAdmin(lrn);
+    // this.NameLearner = localStorage.getItem('learner');
+    this.lrnLearner = localStorage.getItem('LRN'); // Replace with dynamic LRN
+    this.adminID = localStorage.getItem('id'); // Replace with dynamic LRN
+    // this.loadConversation(this.lrnLearner);
+    // const admin = this.getUserDetails();
+    this.getAdminDetails();
+
+
 
     this.spinner();
 
-    //Set an interval to refresh messages every 30 seconds
     this.intervalId = setInterval(() => {
-      this.loadMessage(lrn);
-    }, 10000); // = 30 seconds
+      this.loadConversation(this.lrnLearner);;
+    }, 2000); // = 20 seconds
   }
 
   ngOnDestroy(): void {
-    //Clear the interval when the component is destroyed to prevent memory leaks
+    // Clear the interval when the component is destroyed to prevent memory leaks
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
   }
 
-  spinner() {
-    this.isLoading = true; //Show the loader before the data is loaded
+  // getUserDetails() {
+  //   const details = localStorage.getItem('adminDetails');
+  //   return details ? JSON.parse(details) : null;
+  // }
 
-    //Simulate data fetching (you can replace this with an actual service)
-    setTimeout(() => {
-      this.isLoading = false; //Hide the loader after data is fetched
-    }, 10000); // Simulated delay of 30seconds
-  }
-
-  loadMessage(id:any) {
-    this.studentservice.getMessages(id).subscribe((msg:any) => {
-      this.messages =msg;
-      console.log(this.messages);
-    })
-  }
-
-  getAdmin(id:any ) {
-    this.studentservice.getAdmin(id).subscribe((ads: any) => {
-      this.admin = ads;
-      console.log(this.admin);
-    })
-  }
-
-  onAddMessage() {
-    this.isModalOpen2 = true;
-  }
-
-  closeModal2() {
-    this.isModalOpen2 = false;
-  }
-
-  closeModal3() {
-    this.isModalOpen3 = false;
-  }
-
-  sendMessage() {
-    this.isSubmitting = true;
-    const lrn = localStorage.getItem('LRN');
-    const recipient = (document.getElementById('recipient') as HTMLSelectElement).value;
-    const messageText = (document.getElementById('message') as HTMLTextAreaElement).value;
-
-    // if (!recipient) {
-    //   alert('Please select a recipient.');
-    //   return;
-    // }
-
-    if (!messageText.trim()) {
-      alert('Message cannot be empty.');
-      return;
-    }
-
-    const messagePayload = {
-      adminID: recipient,
-      messages: messageText,
-      lrn: lrn,
-    };
-
-    this.studentservice.sendMessage(messagePayload).subscribe(
-      response => {
-        console.log('Message sent successfully', response);
-        // alert('Message sent successfully');
-        
-        // Progress Bar
-        this.isSending = true;
-        this.progress = 20;
-        const interval = setInterval(() => {
-          if(this.progress < 100) {
-            this.progress += 20;
-          } else {
-            clearInterval(interval);
-            this.isSending = false;
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Message sent!",
-              showConfirmButton: false,
-              timer: 1500
-            });
-            this.closeModal2();
-            (document.getElementById('message') as HTMLTextAreaElement).value = '';
-            this.isSubmitting = false;
-          }
-        }, 100)
-        this.loadMessage(lrn);
-
-
-      },
-      error => {
-        console.error('Error sending message:', error);
-        alert('Failed to send message.');
+  loadConversation(lrn: string): void {
+    this.apiService.getMessages(lrn).subscribe((messages: any) => {
+      this.convoMessages = messages;
+      console.log(messages);
+      if (messages.length > 0) {
+        // this.currentUser = `${admin.firstname} ${admin.lastname}`;
+        this.currentUser = `${messages[0].firstname} ${messages[0].lastname}`;
+        this.adminName = `${messages[0].firstname} ${messages[0].lastname}`;
       }
-    );
+    });
   }
 
-  openModal() {
-    this.isModalOpen = true;
+  sendMessage(): void {
+    if (!this.newMessage.trim()) return;
+
+    const messageData = {
+      lrn: this.lrnLearner, // Replace with dynamic LRN
+      adminID: this.adminid, // Replace with dynamic Admin ID
+      messages: this.newMessage,
+      sender_name: this.adminName
+    };
+    this.isSubmitting = true;
+    this.apiService.sendMessage(messageData).subscribe((response) => {
+      this.loadConversation(this.lrnLearner);
+      this.newMessage = '';
+      this.isSubmitting = false;
+    });
   }
 
-  closeModal() {
-    this.isModalOpen = false;
+  spinner() {
+    this.isLoading = true; // Show the loader before the data is loaded
+
+    // Simulate data fetching (you can replace this with an actual service call)
+    setTimeout(() => {
+      this.isLoading = false; // Hide the loader after data is fetched
+    }, 2000); // Simulated delay of 20 seconds
+  }
+
+  getAdminDetails() {
+    this.apiService.getAdminDetails(this.lrnLearner).subscribe((result: any) => {
+      this.adminid = result;
+      console.log(this.adminid);
+    })
   }
 }

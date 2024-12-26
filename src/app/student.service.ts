@@ -193,4 +193,8 @@ export class StudentService {
   clearUnreadMessages(lrn: string): Observable<any> {
     return this.http.post(this.apiUrl + 'messages/clear', { lrn });
   }
+
+  getAdminDetails(lrn: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}messages/getAdminDetails/${lrn}`);
+  }
 }

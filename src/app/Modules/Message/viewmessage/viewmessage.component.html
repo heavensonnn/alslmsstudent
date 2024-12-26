@@ -1,87 +1,28 @@
 <div class="wrapper">
-    <div class="header">
+    <div class="header" *ngIf="!isLoading">
         <div class="title-and-date">
-            <h1>Message</h1>
-            <p class="current-date">{{ currentDate | date: 'MMMM d, y | h:mm a' }}</p>
+            <h1>Teacher {{adminName}}</h1>
         </div>
     </div>
-    <div class="cards-container">
-        <div class="add-icon" (click)="onAddMessage()">
-            <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
-        </div>
-        <table class="message-table">
-            <thead>
-            <tr>
-                <!-- <th>Teacher Name</th> -->
-                <th>Sender</th>
-                <th>Message</th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <div class="loader-container" *ngIf="isLoading">
-                <div class="spinner"></div>
-            </div>
-            <tbody *ngIf="!isLoading">
-                <tr *ngFor="let msg of messages" (click)="viewMessage(msg)">
-                    <!-- <td>{{ (msg.lastname + ', ' + msg.firstname) }}</td> Use sender_name -->
-                    <td><strong>{{msg.sender_name}}</strong></td>
-                    <td>{{ msg.messages }}</td>
-                    <td>{{ msg.updated_at | date:'medium' }}</td>
-                </tr>
-            </tbody>
-        </table>          
-
+    <div class="loader-container" *ngIf="isLoading">
+        <div class="spinner"></div>
     </div>
-    <div class="modal" [ngClass]="{'show': isModalOpen3}" (click)="closeModal3()">
-        <div class="modal-content3" (click)="$event.stopPropagation()">
-            <span class="close" (click)="closeModal3()">&times;</span>
-            <h4>Message from <b>{{ selectedMessage?.sender_name || (selectedMessage?.lastname + ', ' + selectedMessage?.firstname) }}</b></h4>
-            <h3>{{ selectedMessage?.messages }}</h3>
-    
-            <div class="reply-box">
-                <textarea [(ngModel)]="replyText" placeholder="Type your reply..."></textarea>
 
-                @if (isSending) {
-                    <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
-                }
-
-                <button (click)="sendReply(selectedMessage?.adminID, selectedmessageID)" [disabled]="isSubmitting" class="btn btn-primary">Send</button>
+    <div class="conversation-container" *ngIf="!isLoading">
+        <div class="message" *ngFor="let message of convoMessages">
+            <div 
+                [ngClass]="{
+                    'admin-message': message.sender_name !== currentUser, 
+                    'learner-message': message.sender_name === currentUser
+                }">
+                <p class="message-text">{{ message.messages }}</p>
+                <p class="timestamp">{{ message.created_at | date: 'MMMM d, y | h:mm a' }}</p>
             </div>
         </div>
     </div>
-    
-</div>
 
-<!-- Compose Message Modal -->
-<div class="modal" [ngClass]="{'show': isModalOpen2}" (click)="closeModal2()">
-    <div class="modal-content2" (click)="$event.stopPropagation()">
-        <span class="close" (click)="closeModal2()">&times;</span>
-        <h2>Compose Message</h2>
-
-        <form>
-            <div class="form-group">
-                <label for="recipient">To:</label>
-                <select id="recipient" name="recipient" class="form-control">
-                    <!-- <option value="" active>Select Student</option> -->
-                    <option *ngFor="let a of admin" [value]="a.adminID">
-                        {{ a.firstname }} {{ a.lastname }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" class="form-control" rows="10" placeholder="Compose your message here"></textarea>
-
-                @if (isSending) {
-                    <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
-                }
-            </div>
-
-            <div class="form-actions">
-                <button type="button" class="btn btn-primary" (click)="sendMessage()" [disabled]="isSubmitting">Send</button>
-                <button type="button" class="btn btn-secondary" (click)="closeModal2()">Cancel</button>
-            </div>
-        </form>
+    <div class="reply-container" *ngIf="!isLoading">
+        <textarea [(ngModel)]="newMessage" placeholder="Type your message here..."></textarea>
+        <button (click)="sendMessage()" class="submitting" [disabled]="isSubmitting"><i class="fa fa-paper-plane-o fa-2x" aria-hidden="true"></i></button>
     </div>
 </div>
